@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sat May 26 00:29:23 2018
-
 @author: SavedKriss
 """
 
@@ -25,6 +24,8 @@ def toMinutes(timestamp):
 def toHours(minutes):
     mod = minutes % 60
     modul = []
+    if mod < 10:
+        modul.append(str(0))
     for n in str(mod):
         modul.append(str(n))
     hours = minutes // 60
@@ -44,9 +45,9 @@ def mask(df, key, value1, value2):
 
 # PROGRAM STARTS HERE
 # Set wd
-os.chdir('C:\\folder\\subfolder')
+os.chdir('C:\\mydir\\dir')
 
-data = pd.read_json("myfile.json")
+data = pd.read_json("Myfile.json")
 
 lat, lng, tim = [], [], []
 
@@ -68,8 +69,8 @@ del data, lat, lng, result, tim
 # set area of the block you are researching the data
 offset = 10000
 
-lat_loc = '418900770'
-lng_loc = '124921670'
+lat_loc = '' # <- insert latitude
+lng_loc = '' # <- insert longitude
 
 if len(lat_loc) < 9:
     lat_loc = lat_loc + '0' * (9 - len(lat_loc))
@@ -83,15 +84,15 @@ elif len(lat_loc) > 9:
 else:
     pass
 
-if len(lat_loc) < 9:
-    lat_loc = lat_loc + '0' * (9 - len(lat_loc))
-elif len(lat_loc) > 9:
+if len(lng_loc) < 9:
+    lng_loc = lng_loc + '0' * (9 - len(lng_loc))
+elif len(lng_loc) > 9:
     lprovv = []
     for l in lat_loc:
         lprovv.append(l)
     x = lprovv[0:9]
-    lat_loc = ''
-    lat_loc = lat_loc.join(x)
+    lng_loc = ''
+    lng_loc = lng_loc.join(x)
 else:
     pass
 
@@ -166,6 +167,6 @@ result.loc[len(result)] = ['', '', '', '', '', '', '', 'TOT', hPerman]
 del hPerman
 
 # creates an excel file from 'result' dataframe
-writer = pd.ExcelWriter('MyFile.xlsx', engine='xlsxwriter')
+writer = pd.ExcelWriter('MyPositions.xlsx', engine='xlsxwriter')
 result.to_excel(writer, sheet_name='Sheet1', index=False, )
 writer.save()
